@@ -8,3 +8,22 @@ export async function isMemberOf(octokit: Octokit, orgName: string, userName: st
     })
     return teamResponse.status === 200
 }
+export async function getFirstSuitableLabel(
+    octokit: Octokit,
+    config: GHTeamLabelConfig,
+    orgName: string,
+    userName: string,
+    currentLabels: string[],
+): Promise<string | null> {
+    for (const teamLabel of config.teamLabels) {
+        if (currentLabels.includes(teamLabel.label)) {
+            return teamLabel.label
+        }
+        const isMember = await isMemberOf(octokit, orgName, userName, teamLabel.team)
+        if (isMember) {
+            return teamLabel.label
+        }
+    }
+    return null
+}
+

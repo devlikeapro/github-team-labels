@@ -1,15 +1,16 @@
-import {Probot} from "probot";
+import {Context, Probot} from "probot";
+
+async function handleIssue(context: Context) {
+    const config = await context.config<GHTeamLabelConfig>('gh-team-labels.yml')
+    if (!config) {
+        return
+    }
+    const labels = config.teamLabels.map((teamLabel) => teamLabel.label)
+    await context.octokit.issues.addLabels(context.issue({labels: labels}))
+}
+
 
 export = (app: Probot) => {
-    app.on("issues.opened", async (context) => {
-        const issueComment = context.issue({
-            body: "Thanks for opening this issue!",
-        });
-        await context.octokit.issues.createComment(issueComment);
-    });
-    // For more information on building apps:
-    // https://probot.github.io/docs/
-
-    // To get your app running against GitHub, see:
-    // https://probot.github.io/docs/development/
+    app.on("issues.opened", handleIssue);
+    app.on("issues.edited", handleIssue);
 };

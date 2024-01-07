@@ -1,4 +1,5 @@
 import {Octokit} from "@octokit/core";
+import {GHTeamLabelConfig} from "./config";
 
 export async function isMemberOf(octokit: Octokit, orgName: string, userName: string, teamSlug: string): Promise<boolean> {
     const teamResponse = await octokit.request('GET /orgs/{org}/teams/{team_slug}/memberships/{username}', {

@@ -2,7 +2,7 @@ interface GHTeamLabel{
     team: string;
     label: string;
 }
-interface GHTeamLabelConfig {
+export interface GHTeamLabelConfig {
     teamLabels: GHTeamLabel[]
 }
 

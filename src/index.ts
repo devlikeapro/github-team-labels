@@ -1,10 +1,9 @@
 import {Probot} from "probot";
-import {handleIssue} from "./handlers";
+import {handleIssue, handleIssueComment} from "./handlers";
 
 
 
 export = (app: Probot) => {
-    app.on("issues.opened", handleIssue);
-    app.on("issues.edited", handleIssue);
-    app.on("issues.assigned", handleIssue);
+    app.on("issues", handleIssue);
+    app.on("issue_comment", handleIssueComment);
 };

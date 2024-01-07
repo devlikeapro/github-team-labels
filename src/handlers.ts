@@ -5,9 +5,6 @@ import {getConfig} from "./config";
 
 export async function handleIssue(context: Context<'issues'>) {
     const config = await getConfig(context);
-    if (!config) {
-        return
-    }
     const createdByUser = context.payload.issue.user
     const orgName = context.payload.repository.owner.login
     const currentLabels = context.payload.issue.labels?.map(label => label.name) || []
@@ -15,4 +12,9 @@ export async function handleIssue(context: Context<'issues'>) {
     if (label) {
         await context.octokit.issues.addLabels(context.issue({labels: [label]}))
     }
+}
+
+export async function handleIssueComment(context: Context<'issue_comment'>) {
+    // @ts-ignore
+    await handleIssue(context)
 }

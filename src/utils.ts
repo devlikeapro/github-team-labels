@@ -26,6 +26,19 @@ export async function getFirstSuitableLabel(
     userName: string,
     currentLabels: string[],
 ): Promise<string | null> {
+    // Check ignore rules - users
+    if (config.ignore.users.includes(userName)) {
+        return null
+    }
+    // Check ignore rules - teams
+    for (const teamSlug of config.ignore.teams) {
+        const isMember = await isMemberOf(octokit, orgName, userName, teamSlug)
+        if (isMember) {
+            return null
+        }
+    }
+
+    // Check team labels
     for (const teamLabel of config.teamLabels) {
         if (currentLabels.includes(teamLabel.label)) {
             return teamLabel.label

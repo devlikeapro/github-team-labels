@@ -19,7 +19,7 @@ const EMPTY_CONFIG: GHTeamLabelConfig = {
 }
 
 export async function getConfig(context: any): Promise<GHTeamLabelConfig> {
-    const config = context.config('gh-team-labels.yml') as GHTeamLabelConfig;
+    const config = await context.config('gh-team-labels.yml') as GHTeamLabelConfig;
     if (!config) {
         return EMPTY_CONFIG
     }

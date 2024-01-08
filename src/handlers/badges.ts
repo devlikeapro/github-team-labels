@@ -69,6 +69,33 @@ export async function handleDiscussionAddBadge(context: Context<'discussion'>) {
     });
 }
 
+export async function handleDiscussionCommentAddBadge(context: Context<'discussion_comment'>) {
+    const config = await getConfig(context);
+    const createdByUser = context.payload.comment.user
+    const orgName = context.payload.repository.owner.login
+    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, [])
+    const body = context.payload.comment.body || ""
+    const newBody = upsertBadge(body, teamLabel)
+    if (body === newBody) {
+        return;
+    }
+    const commentId = context.payload.comment.node_id
+    const mutation = `
+  mutation updateDiscussionCommentBody($commentId: ID!, $newBody: String!) {
+    updateDiscussionComment(input: {commentId: $commentId, body: $newBody}){
+        comment {
+            id
+        }
+    }
+  }
+`;
+
+    await context.octokit.graphql(mutation, {
+        commentId: commentId,
+        newBody: newBody,
+    });
+}
+
 function upsertBadge(body: string, teamLabel: GHTeamLabel | null) {
     if (!teamLabel) {
         return body;

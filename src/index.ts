@@ -1,6 +1,6 @@
 import {Probot} from "probot";
 import {
-    handleDiscussionAddBadge,
+    handleDiscussionAddBadge, handleDiscussionCommentAddBadge,
     handleIssueAddBadge,
     handleIssueCommentAddBadge,
     handlePullRequestAddBadge
@@ -19,6 +19,8 @@ export = (app: Probot) => {
     app.on("pull_request.edited", handlePullRequestAddBadge);
     app.on("discussion.created", handleDiscussionAddBadge);
     app.on("discussion.edited", handleDiscussionAddBadge);
+    app.on("discussion_comment.created", handleDiscussionCommentAddBadge);
+    app.on("discussion_comment.edited", handleDiscussionCommentAddBadge);
     // Labels
     app.on("issues.opened", handleIssueLabels);
     app.on("issues.reopened", handleIssueLabels);

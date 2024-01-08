@@ -1,10 +1,17 @@
 import {Probot} from "probot";
-import {handleIssueCommentAddBadge, handleIssueLabels, handleIssueLabelsOnCommentEvent} from "./handlers";
+import {
+    handleIssueAddBadge,
+    handleIssueCommentAddBadge,
+    handleIssueLabels,
+    handleIssueLabelsOnCommentEvent
+} from "./handlers";
 
 
 
 export = (app: Probot) => {
-    // Comments content
+    // Badges
+    app.on("issues.opened", handleIssueAddBadge);
+    app.on("issues.edited", handleIssueAddBadge);
     app.on("issue_comment.created", handleIssueCommentAddBadge);
     app.on("issue_comment.edited", handleIssueCommentAddBadge);
     // Labels

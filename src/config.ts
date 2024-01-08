@@ -1,6 +1,7 @@
 interface GHTeamLabel{
     team: string;
     label: string;
+    comment: string | null | undefined;
 }
 interface GHIgnoreRules {
     users: string[];

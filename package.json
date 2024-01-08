@@ -1,5 +1,5 @@
 {
-  "name": "github-team-labels",
+  "name": "gh-team-labels",
   "version": "1.0.0",
   "private": true,
   "description": "Add labels to issues, discussions, and PRs based on the author teams.",

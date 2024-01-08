@@ -1,4 +1,4 @@
-# github-team-labels
+# gh-team-labels
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) that Add labels to issues, discussions, and PRs based on the author teams.
 
@@ -16,15 +16,15 @@ npm start
 
 ```sh
 # 1. Build container
-docker build -t github-team-labels .
+docker build -t gh-team-labels .
 
 # 2. Start container
-docker run -e APP_ID=<app-id> -e PRIVATE_KEY=<pem-value> github-team-labels
+docker run -e APP_ID=<app-id> -e PRIVATE_KEY=<pem-value> gh-team-labels
 ```
 
 ## Contributing
 
-If you have suggestions for how github-team-labels could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
+If you have suggestions for how gh-team-labels could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
 
 For more, check out the [Contributing Guide](CONTRIBUTING.md).
 

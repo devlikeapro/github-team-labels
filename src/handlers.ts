@@ -3,7 +3,7 @@ import {getFirstSuitableLabel} from "./utils";
 import {getConfig} from "./config";
 
 
-export async function handleIssue(context: Context<'issues'>) {
+export async function handleIssueLabels(context: Context<'issues'>) {
     const config = await getConfig(context);
     const createdByUser = context.payload.issue.user
     const orgName = context.payload.repository.owner.login
@@ -14,7 +14,7 @@ export async function handleIssue(context: Context<'issues'>) {
     }
 }
 
-export async function handleIssueComment(context: Context<'issue_comment'>) {
+export async function handleIssueLabelsOnCommentEvent(context: Context<'issue_comment'>) {
     // @ts-ignore
-    await handleIssue(context)
+    await handleIssueLabels(context)
 }

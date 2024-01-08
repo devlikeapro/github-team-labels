@@ -1,10 +1,6 @@
 import {Probot} from "probot";
-import {
-    handleIssueAddBadge,
-    handleIssueCommentAddBadge,
-    handleIssueLabels,
-    handleIssueLabelsOnCommentEvent
-} from "./handlers";
+import {handleIssueAddBadge, handleIssueCommentAddBadge} from "./handlers/badges";
+import {handleIssueLabels, handleIssueLabelsOnCommentEvent} from "./handlers/labels";
 
 
 

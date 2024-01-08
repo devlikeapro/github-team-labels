@@ -1,35 +1,8 @@
 import {Context} from "probot";
-import {getFirstSuitableLabel} from "./utils";
-import {getConfig, GHTeamLabel} from "./config";
+import {getConfig, GHTeamLabel} from "../config";
+import {getFirstSuitableLabel} from "../utils";
 
-//
-// Labels
-//
-
-export async function handleIssueLabels(context: Context<'issues'>) {
-    const config = await getConfig(context);
-    const createdByUser = context.payload.issue.user
-    const orgName = context.payload.repository.owner.login
-    const currentLabels = context.payload.issue.labels?.map(label => label.name) || []
-    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, currentLabels)
-    if (!teamLabel) {
-        return;
-    }
-
-    const label = teamLabel.label
-    await context.octokit.issues.addLabels(context.issue({labels: [label]}))
-}
-
-export async function handleIssueLabelsOnCommentEvent(context: Context<'issue_comment'>) {
-    // @ts-ignore
-    await handleIssueLabels(context)
-}
-
-//
-// Badges
-//
-
-export async function handleIssueCommentAddBadge(context: Context<'issue_comment.created'> | Context<'issue_comment.edited'>) {
+export async function handleIssueCommentAddBadge(context: Context<'issue_comment'>) {
     const config = await getConfig(context);
     const createdByUser = context.payload.comment.user
     const orgName = context.payload.repository.owner.login
@@ -47,8 +20,7 @@ export async function handleIssueAddBadge(context: Context<'issues'>) {
     const config = await getConfig(context);
     const createdByUser = context.payload.issue.user
     const orgName = context.payload.repository.owner.login
-    const currentLabels = context.payload.issue.labels?.map(label => label.name) || []
-    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, currentLabels)
+    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, [])
     const body = context.payload.issue.body || ""
     const newBody = upsertBadge(body, teamLabel)
     if (body === newBody) {

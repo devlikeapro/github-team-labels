@@ -1,5 +1,5 @@
 import {Octokit} from "@octokit/core";
-import {GHTeamLabelConfig} from "./config";
+import {GHTeamLabel, GHTeamLabelConfig} from "./config";
 import {RequestError} from "@octokit/request-error";
 
 export async function isMemberOf(octokit: Octokit, orgName: string, userName: string, teamSlug: string): Promise<boolean> {
@@ -25,7 +25,7 @@ export async function getFirstSuitableLabel(
     orgName: string,
     userName: string,
     currentLabels: string[],
-): Promise<string | null> {
+): Promise<GHTeamLabel | null> {
     // Check ignore rules - users
     if (config.ignore.users.includes(userName)) {
         return null
@@ -41,11 +41,11 @@ export async function getFirstSuitableLabel(
     // Check team labels
     for (const teamLabel of config.teamLabels) {
         if (currentLabels.includes(teamLabel.label)) {
-            return teamLabel.label
+            return teamLabel
         }
         const isMember = await isMemberOf(octokit, orgName, userName, teamLabel.team)
         if (isMember) {
-            return teamLabel.label
+            return teamLabel
         }
     }
     return null

@@ -42,7 +42,7 @@ export async function handleIssueCommentAddBadge(context: Context<'issue_comment
     if (commentBody.includes(badge)) {
         return;
     }
-    const newCommentBody = commentBody + "\n" + badge
+    const newCommentBody = commentBody + "\n\n"  + badge
     const commentId = context.payload.comment.id
     await context.octokit.issues.updateComment(context.issue({comment_id: commentId, body: newCommentBody}))
 }

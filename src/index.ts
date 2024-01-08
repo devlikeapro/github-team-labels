@@ -1,5 +1,5 @@
 import {Probot} from "probot";
-import {handleIssueAddBadge, handleIssueCommentAddBadge} from "./handlers/badges";
+import {handleIssueAddBadge, handleIssueCommentAddBadge, handlePullRequestAddBadge} from "./handlers/badges";
 import {handleIssueLabels, handleIssueLabelsOnCommentEvent, handlePullRequestLabels} from "./handlers/labels";
 
 
@@ -10,6 +10,8 @@ export = (app: Probot) => {
     app.on("issues.edited", handleIssueAddBadge);
     app.on("issue_comment.created", handleIssueCommentAddBadge);
     app.on("issue_comment.edited", handleIssueCommentAddBadge);
+    app.on("pull_request.opened", handlePullRequestAddBadge);
+    app.on("pull_request.edited", handlePullRequestAddBadge);
     // Labels
     app.on("issues.opened", handleIssueLabels);
     app.on("issues.reopened", handleIssueLabels);

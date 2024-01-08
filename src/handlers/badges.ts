@@ -29,6 +29,19 @@ export async function handleIssueAddBadge(context: Context<'issues'>) {
     await context.octokit.issues.update(context.issue({body: newBody}))
 }
 
+export async function handlePullRequestAddBadge(context: Context<'pull_request'>) {
+    const config = await getConfig(context);
+    const createdByUser = context.payload.pull_request.user
+    const orgName = context.payload.repository.owner.login
+    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, [])
+    const body = context.payload.pull_request.body || ""
+    const newBody = upsertBadge(body, teamLabel)
+    if (body === newBody) {
+        return;
+    }
+    await context.octokit.issues.update(context.issue({body: newBody}))
+}
+
 function upsertBadge(body: string, teamLabel: GHTeamLabel | null) {
     if (!teamLabel) {
         return body;

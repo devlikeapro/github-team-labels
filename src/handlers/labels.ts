@@ -20,3 +20,17 @@ export async function handleIssueLabelsOnCommentEvent(context: Context<'issue_co
     // @ts-ignore
     await handleIssueLabels(context)
 }
+
+export async function handlePullRequestLabels(context: Context<'pull_request'>) {
+    const config = await getConfig(context);
+    const createdByUser = context.payload.pull_request.user
+    const orgName = context.payload.repository.owner.login
+    const currentLabels = context.payload.pull_request.labels?.map(label => label.name) || []
+    const teamLabel = await getFirstSuitableLabel(context.octokit, config, orgName, createdByUser.login, currentLabels)
+    if (!teamLabel) {
+        return;
+    }
+
+    const label = teamLabel.label
+    await context.octokit.issues.addLabels(context.issue({labels: [label]}))
+}

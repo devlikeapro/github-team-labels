@@ -1,6 +1,9 @@
 # gh-team-labels
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that Add labels to issues, discussions, and PRs based on the author teams.
+Add **labels** to issues, discussions, and PRs based on the author teams.
+
+
+> A GitHub App built with [Probot](https://github.com/probot/probot) that
 
 ## Setup
 
